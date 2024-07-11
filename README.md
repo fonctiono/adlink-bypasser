@@ -8,4 +8,5 @@
 * Easy To Setup
 * Regulary Updated
 * No errors
+
 Example: https://api-minecraft.net/$$$/ugsuv72m8ni384dxrc.png (e-z.gg url)
