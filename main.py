@@ -1,3 +1,4 @@
+# SCRIPTED BY visey.lol fr
 import discord, os
 from discord import app_commands
 import requests
