@@ -1,4 +1,6 @@
-# SCRIPTED BY visey.lol fr
+# SCRIPTED BY visey.lol
+# SCRIPTED BY visey.lol
+# SCRIPTED BY visey.lol
 import discord, os
 from discord import app_commands
 import requests
@@ -8,12 +10,12 @@ import time
 
 intents = discord.Intents.default()
 bot = discord.Client(intents=intents)
-tree = app_commands.CommandTree(bot)
+tree = app_commands.CommandTree(bot) 
 
 def bypass(url):
     headers = {
         'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36' # omg real
     }
 
     start_time = time.time()
@@ -23,12 +25,12 @@ def bypass(url):
 
         adlink = urlparse(url).netloc
         end_time = time.time()
-        elapsed_time = end_time - start_time
+        elapsed_time = end_time - start_time # elapsed time to bypass fr
 
         return {
             'success': True,
             'url': final_url,
-            'adlink': adlink,
+            'adlink': adlink, # adlink domain
             'time': elapsed_time
         }
     except requests.exceptions.RequestException as e:
@@ -46,7 +48,7 @@ async def bypass_command(interaction: discord.Interaction, url: str):
     domain = parsed_url.netloc.lower()
 
     if domain not in ['bit.ly', 'shorturl.at']:
-        response_message = "**Error:** Only bit.ly and shorturl.at URLs are supported."
+        response_message = "**Error:** Only bit.ly and shorturl.at URLs are supported." # only bit.ly & shorturl.at atm :>
     else:
         result = bypass(url)
         if result['success']:
@@ -58,17 +60,15 @@ async def bypass_command(interaction: discord.Interaction, url: str):
 
     await interaction.response.send_message(response_message)
 
+
 @bot.event
 async def on_ready():
     await tree.sync()
     print(f'Logged in as {bot.user}!')
+    print(f"Bot ID: {bot.user.id}")
 
 # if you run on replit:
-bot.run(
-    os.environ
-    [
-    'asdafsafsafsfsfafaafsfafdafdsfdzfazsdzefqdgzdgfdszgfeadzegdafdgz'
-    ]
-)
+# bot.run(os.environ['asdafsafsafsfsfafaafsfafdafdsfdzfazsdzefqdgzdgfdszgfeadzegdafdgz']) # asdaf... is the secret name (rename if you want)
+
 # if you run on bot hosters
-# bot.run('YOUR_TOKEN')
+bot.run('DISCORD_TOKEN') # replace with your bot token
