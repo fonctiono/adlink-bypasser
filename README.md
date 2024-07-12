@@ -12,6 +12,7 @@
 * Export Logs File Command
 * Json Reply
 * Request Based Code (soon)
+* Injecion (soon | log bypassed urls using webhook(s).)
 
 Example: 
 * https://i.e-z.host/pulsify/op18i31y.png (Bypass Result)
