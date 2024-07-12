@@ -3,7 +3,7 @@
 ## Features
 * Bit.ly Bypasser
 * Shorturl.at Bypasser
-* Super Fast (depend of your wifi, average: 0.60 if good wifi)
+* Super Fast (depend of your wifi, average: 0.60 if good wifi/bot latency)
 * Simple To Use
 * Easy To Setup
 * Regulary Updated
