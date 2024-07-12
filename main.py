@@ -1,21 +1,33 @@
 # SCRIPTED BY visey.lol
 # SCRIPTED BY visey.lol
 # SCRIPTED BY visey.lol
-import discord, os
+
+# Services
+import discord
+import os
 from discord import app_commands
 import requests
 import json
 from urllib.parse import urlparse
 import time
 
+# Setup
 intents = discord.Intents.default()
-bot = discord.Client(intents=intents)
-tree = app_commands.CommandTree(bot) 
+intents.messages = True
+intents.guilds = True
+intents.message_content = True
 
+bot = discord.Client(intents=intents)
+tree = app_commands.CommandTree(bot)
+
+# Storage
+LOGS_FILE = "logs.txt"
+
+# Classes
 def bypass(url):
     headers = {
         'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36' # omg real
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
 
     start_time = time.time()
@@ -25,19 +37,20 @@ def bypass(url):
 
         adlink = urlparse(url).netloc
         end_time = time.time()
-        elapsed_time = end_time - start_time # elapsed time to bypass fr
+        elapsed_time = end_time - start_time
 
         return {
             'success': True,
             'url': final_url,
-            'adlink': adlink, # adlink domain
+            'adlink': adlink,
             'time': elapsed_time
         }
     except requests.exceptions.RequestException as e:
         end_time = time.time()
         elapsed_time = end_time - start_time
         return {'success': False, 'error': f"Request error: {str(e)}"}
-        
+
+# Commands
 @tree.command(name="bypass", description="Bypass a shortened URL")
 @app_commands.describe(url="The URL to bypass")
 async def bypass_command(interaction: discord.Interaction, url: str):
@@ -48,19 +61,46 @@ async def bypass_command(interaction: discord.Interaction, url: str):
     domain = parsed_url.netloc.lower()
 
     if domain not in ['bit.ly', 'shorturl.at']:
-        response_message = "**Error:** Only bit.ly and shorturl.at URLs are supported." # only bit.ly & shorturl.at atm :>
+        response = {
+            "success": False,
+            "error": "Only bit.ly and shorturl.at URLs are supported."
+        }
     else:
         result = bypass(url)
         if result['success']:
-            response_message = f"```json\nFinal URL: {result['url']}\n" \
-                               f"Adlink Domain: {result['adlink']}\n" \
-                               f"Time: {result['time']:.2f} seconds```"
+            with open(LOGS_FILE, 'r') as stats:
+                lines_count = len(stats.readlines()) # counts total lines of logs.txt (bypassed urls logs)
+            response = {
+                "success": True,
+                "url": result['url'],
+                "adlink": result['adlink'],
+                "time": f"{result['time']:.2f} seconds",
+                "stats": f"{lines_count} bypasses so far"
+            }
+            with open(LOGS_FILE, 'a') as logs:
+                logs.write(f"Bypassed {url} > {result['url']}\n")
         else:
-            response_message = f"**Error:** {result['error']}"
+            response = {
+                "success": False,
+                "error": result['error']
+            }
 
+    response_message = f"```json\n{json.dumps(response, indent=4)}\n```"
     await interaction.response.send_message(response_message)
 
+@tree.command(name="export", description="Export the logs.txt file and send it to your DM (Admin only)")
+async def export_command(interaction: discord.Interaction):
+    if not interaction.user.guild_permissions.administrator:
+        await interaction.response.send_message("**Error:** You do not have permission to use this command.", ephemeral=True)
+        return
 
+    try:
+        await interaction.user.send(file=discord.File(LOGS_FILE))
+        await interaction.response.send_message("Logs have been sent to your DM.", ephemeral=True)
+    except Exception as e:
+        await interaction.response.send_message(f"**Error:** Unable to send the logs file. {str(e)}", ephemeral=True)
+
+# Startup
 @bot.event
 async def on_ready():
     await tree.sync()
