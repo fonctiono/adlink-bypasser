@@ -18,3 +18,5 @@ Example:
 * https://i.e-z.host/pulsify/op18i31y.png (Bypass Result)
 * https://i.e-z.host/pulsify/mobadatq.png (Export Logs Command)
 * https://i.e-z.host/pulsify/0zsuesyl.png (Logs File)
+
+## Please Star for more updates!
