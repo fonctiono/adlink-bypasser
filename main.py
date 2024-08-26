@@ -1,6 +1,6 @@
-# SCRIPTED BY visey.lol
-# SCRIPTED BY visey.lol
-# SCRIPTED BY visey.lol
+# SCRIPTED BY pulse.zip
+# SCRIPTED BY pulse.zip
+# SCRIPTED BY pulse.zip
 
 # Services
 import discord
